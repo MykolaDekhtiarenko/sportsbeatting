@@ -1,6 +1,5 @@
 package com.epam.training.sportsbeatting.action;
 
-import com.epam.training.sportsbeatting.util.reader.InputReader;
 import com.epam.training.sportsbeatting.domain.outcome.Outcome;
 import com.epam.training.sportsbeatting.domain.outcome.OutcomeOdd;
 import com.epam.training.sportsbeatting.domain.user.Player;
@@ -8,6 +7,7 @@ import com.epam.training.sportsbeatting.domain.wager.Wager;
 import com.epam.training.sportsbeatting.infrastructure.Session;
 import com.epam.training.sportsbeatting.service.OutcomeOddService;
 import com.epam.training.sportsbeatting.service.OutcomeService;
+import com.epam.training.sportsbeatting.util.reader.InputReader;
 import com.epam.training.sportsbeatting.view.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -60,7 +60,7 @@ public class PlayGameAction implements Action {
                 .amount(reader.readValue("Amount: ", 0, current.getBalance()))
                 .currency(session.getCurrentPlayer().getCurrency())
                 .timestamp(LocalDateTime.now())
-                .outcomeOdd(outcomeOdds.get(choice))
+                .outcomeOdd(outcomeOdds.get(choice - 1))
                 .build();
     }
 

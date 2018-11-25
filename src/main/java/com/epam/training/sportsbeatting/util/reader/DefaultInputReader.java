@@ -12,19 +12,14 @@ public class DefaultInputReader implements InputReader {
     private View view;
 
     public String readValue(String message, String regexp) {
-        String res;
-        view.printMessage(message);
-        while (!(view.hasValue() && (res = view.getValue()).matches(regexp))) {
-            view.printErrorMessage(message);
-        }
-        return res;
+        return readValue(message, regexp, message);
     }
 
     public String readValue(String message, String regexp, String errorMessage) {
         String res;
         view.printMessage(message);
         while (!(view.hasValue() && (res = view.getValue()).matches(regexp))) {
-            view.printErrorMessage(errorMessage + "\n" + message);
+            view.printErrorMessage(errorMessage);
         }
         return res;
     }
