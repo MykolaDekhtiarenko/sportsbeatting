@@ -1,10 +1,10 @@
 package com.epam.training.sportsbeatting.action;
 
-import com.epam.training.sportsbeatting.util.reader.InputReader;
 import com.epam.training.sportsbeatting.domain.Currency;
 import com.epam.training.sportsbeatting.domain.user.Player;
 import com.epam.training.sportsbeatting.infrastructure.Session;
 import com.epam.training.sportsbeatting.service.PlayerService;
+import com.epam.training.sportsbeatting.util.reader.InputReader;
 import com.epam.training.sportsbeatting.view.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 @Component
 public class PlayerRegistrationAction implements Action {
@@ -26,6 +28,7 @@ public class PlayerRegistrationAction implements Action {
     private static final String GET_BIRTH_DATE_MESSAGE = "user.registration.birthDate";
     private static final String BIRTH_DATE_VALIDATION = "^([0-9]){4}-([0-9]){2}-([0-9]){2}";
     private static final String GREET_USER_MESSAGE = "user.greeting";
+    private static final String MINOR = "You're not allowed to play because you're under 18.";
 
     @Autowired
     private PlayerService playerService;
@@ -56,6 +59,7 @@ public class PlayerRegistrationAction implements Action {
                 reader.readValue(env.getProperty(GET_BIRTH_DATE_MESSAGE), BIRTH_DATE_VALIDATION),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd")
         ));
+        checkArgument(LocalDate.now().getYear() - player.getDateOfBirth().getYear() >= 18, MINOR);
         session.setCurrentPlayer(player);
         playerService.save(player);
         view.printMessage(String.format(env.getProperty(GREET_USER_MESSAGE), player.getName(),

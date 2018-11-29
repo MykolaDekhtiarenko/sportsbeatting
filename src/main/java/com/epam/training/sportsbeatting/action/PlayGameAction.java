@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkPositionIndex;
+
 @Component
 public class PlayGameAction implements Action {
     private static final String OUTCOME_MESSAGE = "game.outcome";
@@ -54,18 +57,20 @@ public class PlayGameAction implements Action {
     private Wager bet() {
         List<OutcomeOdd> outcomeOdds = outcomeOddService.findAll();
         IntStream.range(1, outcomeOdds.size() + 1).forEach(i -> showOutcomeOddToBetOn(i, outcomeOdds.get(i - 1)));
-        int choice = reader.readValue("Your choice: ", 0, outcomeOdds.size());
-        Player current = session.getCurrentPlayer();
+        int choice = checkPositionIndex(
+                reader.readValue("Your choice: ", 0, outcomeOdds.size()) - 1, outcomeOdds.size());
+        Player current = checkNotNull(session.getCurrentPlayer());
+
         return Wager.builder()
                 .amount(reader.readValue("Amount: ", 0, current.getBalance()))
                 .currency(session.getCurrentPlayer().getCurrency())
                 .timestamp(LocalDateTime.now())
-                .outcomeOdd(outcomeOdds.get(choice - 1))
+                .outcomeOdd(outcomeOdds.get(choice))
                 .build();
     }
 
     private Player processWager(Wager wager) {
-        Player current = session.getCurrentPlayer();
+        Player current = checkNotNull(session.getCurrentPlayer());
         Outcome winningOutcome = outcomeService.chooseWinOutcome(wager.getOutcomeOdd().getOutcome().getBet().getId());
         if (winningOutcome == wager.getOutcomeOdd().getOutcome()) {
             current.setBalance((int) (current.getBalance() + wager.getAmount() * wager.getOutcomeOdd().getValue()));
