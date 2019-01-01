@@ -2,12 +2,20 @@ package com.epam.training.sportsbeatting.domain.wager;
 
 import com.epam.training.sportsbeatting.domain.Currency;
 import com.epam.training.sportsbeatting.domain.outcome.OutcomeOdd;
-import com.epam.training.sportsbeatting.domain.user.Player;
+import com.epam.training.sportsbeatting.domain.user.User;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Data
@@ -43,6 +51,6 @@ public class Wager {
 
     @ManyToOne
     @JoinColumn(name = "player_id", nullable = false)
-    private Player player;
+    private User user;
 
 }
