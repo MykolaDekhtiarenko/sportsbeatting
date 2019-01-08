@@ -1,4 +1,4 @@
-package com.epam.training.sportsbeatting.dto;
+package com.epam.training.sportsbeatting.dto.user.read;
 
 import com.epam.training.sportsbeatting.domain.Currency;
 import lombok.Builder;

@@ -2,6 +2,7 @@ package com.epam.training.sportsbeatting.domain.user;
 
 import com.epam.training.sportsbeatting.domain.Currency;
 import com.epam.training.sportsbeatting.domain.wager.Wager;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Data
+@Builder
 @Entity
 public class User implements UserDetails {
 
