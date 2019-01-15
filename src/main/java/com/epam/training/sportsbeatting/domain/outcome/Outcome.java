@@ -2,6 +2,7 @@ package com.epam.training.sportsbeatting.domain.outcome;
 
 import com.epam.training.sportsbeatting.domain.bet.Bet;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class Outcome {
     @JoinColumn(name = "bet_id", nullable = false)
     private Bet bet;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "outcome", cascade = CascadeType.ALL)
     private List<OutcomeOdd> outcomeOdds;
 

@@ -2,6 +2,7 @@ package com.epam.training.sportsbeatting.domain.sportevent;
 
 import com.epam.training.sportsbeatting.domain.bet.Bet;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public abstract class SportEvent {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "sportEvent", cascade = CascadeType.ALL)
     private List<Bet> bets;
 

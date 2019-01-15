@@ -4,6 +4,7 @@ import com.epam.training.sportsbeatting.domain.Currency;
 import com.epam.training.sportsbeatting.domain.wager.Wager;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -53,6 +54,7 @@ public class User implements UserDetails {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Wager> wagers;
 

@@ -2,6 +2,7 @@ package com.epam.training.sportsbeatting.domain.outcome;
 
 import com.epam.training.sportsbeatting.domain.wager.Wager;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -28,6 +29,7 @@ public class OutcomeOdd {
     @JoinColumn(name = "outcome_id", nullable = false)
     private Outcome outcome;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "outcomeOdd", cascade = CascadeType.ALL)
     private List<Wager> wagers;
 
