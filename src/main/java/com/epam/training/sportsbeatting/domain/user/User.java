@@ -2,8 +2,10 @@ package com.epam.training.sportsbeatting.domain.user;
 
 import com.epam.training.sportsbeatting.domain.Currency;
 import com.epam.training.sportsbeatting.domain.wager.Wager;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +27,8 @@ import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class User implements UserDetails {
 
@@ -55,7 +59,7 @@ public class User implements UserDetails {
     private LocalDate dateOfBirth;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<Wager> wagers;
 
     @Override

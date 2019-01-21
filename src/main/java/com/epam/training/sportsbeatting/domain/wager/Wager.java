@@ -2,11 +2,13 @@ package com.epam.training.sportsbeatting.domain.wager;
 
 import com.epam.training.sportsbeatting.domain.Currency;
 import com.epam.training.sportsbeatting.domain.outcome.OutcomeOdd;
+import com.epam.training.sportsbeatting.domain.sportevent.SportEvent;
 import com.epam.training.sportsbeatting.domain.user.User;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -43,7 +45,7 @@ public class Wager {
 
     @Column(name = "win", columnDefinition = "SMALLINT(1)")
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private boolean win;
+    private Boolean win;
 
     @ManyToOne
     @JoinColumn(name = "outcome_odd_id", nullable = false)
@@ -53,4 +55,8 @@ public class Wager {
     @JoinColumn(name = "player_id", nullable = false)
     private User user;
 
+    public boolean eventIsStarted(){
+        SportEvent event = getOutcomeOdd().getOutcome().getBet().getSportEvent();
+        return event.getStartDate().isAfter(LocalDateTime.now());
+    }
 }

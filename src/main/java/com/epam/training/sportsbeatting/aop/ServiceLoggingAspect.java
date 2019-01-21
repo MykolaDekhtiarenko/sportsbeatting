@@ -1,5 +1,6 @@
 package com.epam.training.sportsbeatting.aop;
 
+import org.apache.logging.log4j.util.Strings;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Objects;
 
 @Aspect
 @Configuration
@@ -29,7 +31,7 @@ public class ServiceLoggingAspect {
         Object result = joinPoint.proceed();
 
         long executionTime = System.currentTimeMillis() - startedAt;
-        LOGGER.info(String.format(METHOD_INVOCATION_RESULT, result.toString()));
+        LOGGER.info(String.format(METHOD_INVOCATION_RESULT, Objects.nonNull(result) ? result.toString() : Strings.EMPTY));
         LOGGER.info(String.format(METHOD_EXECUTION_TIME, executionTime));
 
         return result;

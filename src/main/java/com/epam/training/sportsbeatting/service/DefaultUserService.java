@@ -7,6 +7,7 @@ import com.epam.training.sportsbeatting.repository.UserRepository;
 import com.epam.training.sportsbeatting.service.environment.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,15 +22,26 @@ public class DefaultUserService implements UserService {
     private PropertyService propertyService;
 
     @Autowired
-    private UserRepository playerRepository;
+    private UserRepository userRepository;
+
+    @Override
+    public User getCurrentUser() {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userRepository.getOne(principal.getId());
+    }
 
     @Override
     public User register(User user) {
-        if(playerRepository.existsByEmail(user.getEmail())){
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserWithSuchEmailExistsException(userWithSuchEmailExistsMessage);
         }
         user.setBalance(Integer.valueOf(propertyService.getPropertyOrDefault(USER_BALANCE_PROPERTY, "10000")));
         user.setCurrency(Currency.valueOf(propertyService.getPropertyOrDefault(USER_CURRENCY_PROPERTY, "UAN")));
-        return playerRepository.save(user);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User save(User user){
+        return userRepository.save(user);
     }
 }
